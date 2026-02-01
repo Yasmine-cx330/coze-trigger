@@ -1,28 +1,29 @@
 name: Coze Workflow Scheduled Trigger
 on:
   schedule:
-    # 北京时间14点触发（UTC 6点）
-    #- cron: '0 6 * * *'
-    # 测试定时（17:35）
+    # 17:55 触发（UTC 09:55）
     - cron: '55 9 * * *'
+  workflow_dispatch:  # 新增：允许手动触发
+
 jobs:
   trigger-coze-workflow:
     runs-on: ubuntu-latest
     steps:
       - name: 调用Coze API触发工作流
         run: |
-          # 构造请求体，和你阿里云函数的parameters完全一致
           REQUEST_BODY=$(cat << EOF
           {
             "workflow_id": "7587672674312601635",
             "parameters": {
               "key": "SCT306988TmH94YUCy632TxeD8p6LxoEEZ",
-              "rss_list": "https://testyaxin.zeabur.app/feeds/MP_WXS_3920256514.atom\nhttps://testyaxin.zeabur.app/feeds/MP_WXS_3919437249.atom\nhttps://testyaxin.zeabur.app/feeds/MP_WXS_3005106710.atom\nhttps://testyaxin.zeabur.app/feeds/MP_WXS_3080421900.atom"
+              "rss_list": "https://testyaxin.zeabur.app/feeds/MP_WXS_3920256514.atom
+          https://testyaxin.zeabur.app/feeds/MP_WXS_3919437249.atom
+          https://testyaxin.zeabur.app/feeds/MP_WXS_3005106710.atom
+          https://testyaxin.zeabur.app/feeds/MP_WXS_3080421900.atom"
             }
           }
           EOF
           )
-          # 发送POST请求调用Coze触发API
           curl -X POST \
           -H "Content-Type: application/json" \
           -H "Authorization: Bearer pat_cNxCHWFzS2Ui9LvTyKJaRcxQ5sj7hxF7YTNGjxnIYjw8E5dFCyznIhV6OtLTfoND" \
